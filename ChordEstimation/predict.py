@@ -51,7 +51,7 @@ class Predict:
 
         output_chords = output['chord_out'].squeeze()
 
-        for i, chord in enumerate(output_chords):
+        for chord in output_chords:
             c_idx = int(torch.argmax(chord))
             chordstr = self.dataset.convert_chord_int_to_str(c_idx)
             pred_output.append(chordstr)

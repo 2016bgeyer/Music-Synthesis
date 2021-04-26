@@ -1,0 +1,11 @@
+torchvision
+pandas
+torch
+numpy
+tqdm==4.26.0
+music21==5.5.0
+scikit_learn
+sanic 
+sanic_cors
+aoiklivereload
+tensorboardx

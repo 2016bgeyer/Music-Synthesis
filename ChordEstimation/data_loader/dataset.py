@@ -104,20 +104,20 @@ class MidiDataset(Dataset):
         self.transform = transform
         self.target_transform = target_transform
 
-    @classmethod
-    def simplify_chord(cls, chord):
-        '''
-        Given chord, gives idx of all the notes, simplifying it
-        return as string joined by '.'
-        '''
-        note_list = []
-        notes = chord.split('.')
+    # @classmethod
+    # def simplify_chord(cls, chord):
+    #     '''
+    #     Given chord, gives idx of all the notes, simplifying it
+    #     return as string joined by '.'
+    #     '''
+    #     note_list = []
+    #     notes = chord.split('.')
 
-        for n in notes:
-            n_idx = str(cls.convert_note_to_int(n))
-            if n_idx not in note_list: note_list.append(n_idx)
+    #     for n in notes:
+    #         n_idx = str(cls.convert_note_to_int(n))
+    #         if n_idx not in note_list: note_list.append(n_idx)
 
-        return '.'.join(note_list)
+    #     return '.'.join(note_list)
 
     @classmethod
     def convert_note_to_int(cls, note):
