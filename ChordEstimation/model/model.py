@@ -152,7 +152,7 @@ class BigMidiLSTM(MidiLSTM):
         self.hidden_network =  nn.Sequential()
         self.melody_classifier = nn.Sequential(
             nn.Dropout(self.dropout),
-            nn.Linear(self.hidden_size, self.hidden_size//2),
+            nn.Linear(self.hidden_size * self.scale, self.hidden_size//2),
             nn.ReLU(),
             nn.Dropout(self.dropout),
             nn.Linear(self.hidden_size//2, self.hidden_size//4),
@@ -166,7 +166,7 @@ class BigMidiLSTM(MidiLSTM):
         if MidiDataset.USE_CHORD_ONEHOT:
             self.chord_classifier = nn.Sequential(
                 nn.Dropout(self.dropout),
-                nn.Linear(self.hidden_size, self.hidden_size//2),
+                nn.Linear(self.hidden_size * self.scale, self.hidden_size//2),
                 nn.ReLU(),
                 nn.Dropout(self.dropout),
                 nn.Linear(self.hidden_size//2, self.hidden_size//4),
@@ -180,7 +180,7 @@ class BigMidiLSTM(MidiLSTM):
         else:
             self.chord_classifier = nn.Sequential(
                 nn.Dropout(self.dropout),
-                nn.Linear(self.hidden_size, self.hidden_size//2),
+                nn.Linear(self.hidden_size * self.scale, self.hidden_size//2),
                 nn.ReLU(),
                 nn.Dropout(self.dropout),
                 nn.Linear(self.hidden_size//2, self.hidden_size//4),

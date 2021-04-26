@@ -1,7 +1,8 @@
 *.DS_Store
 *.mid*
 *.pyc
-ChordEstimation/saved
 venv/
+*-checkpoint.ipynb
+ChordEstimation/saved
 ChordEstimation/config/
 ChordEstimation/weights/

@@ -143,9 +143,7 @@ class BaseTrainer:
         :param log: logging information of the epoch
         :param save_best: if True, rename the saved checkpoint to 'model_best.pth'
         """
-        arch = type(self.model).__name__
         state = {
-            'arch': arch,
             'epoch': epoch,
             'logger': self.train_logger,
             'state_dict': self.model.state_dict(),
@@ -171,9 +169,14 @@ class BaseTrainer:
         self.start_epoch = checkpoint['epoch'] + 1
         self.mnt_best = checkpoint['monitor_best']
 
-        # load architecture params from checkpoint.
-        if checkpoint['config']['arch'] != self.config['arch']:
-            self.logger.warning('Warning: Architecture configuration given in config file is different from that of checkpoint. ' + \
+        print(checkpoint['config'])
+
+        print('\n\n\n', self.config)
+
+
+        # load model params from checkpoint.
+        if checkpoint['config']['model']['name'] != self.config['model']['name']:
+            self.logger.warning('Warning: Model configuration given in config file is different from that of checkpoint. ' + \
                                 'This may yield an exception while state_dict is being loaded.')
         self.model.load_state_dict(checkpoint['state_dict'])
 

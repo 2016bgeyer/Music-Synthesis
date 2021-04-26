@@ -1,6 +1,6 @@
-torchvision
+torchvision==0.9.1+cu11
 pandas
-torch
+torch==1.81+cu11
 numpy
 tqdm==4.26.0
 music21==5.5.0

@@ -1,5 +1,5 @@
 {
-    "name": "Custom_Music_LSTM_big",
+    "name": "Chord_Only_BiLSTM_big",
     "n_gpu": 1,
     "model": {
         "name": "BigMidiLSTM",
@@ -9,14 +9,14 @@
             "hidden_size": 512,
             "num_layers": 2,
             "dropout": 0.2,
-            "bidirectional": false
+            "bidirectional": true
         }
     },
     "data_loader": {
         "name": "MidiDataLoader",
         "args": {
             "data_path": "data/out.pkl",
-            "batch_size": 64,
+            "batch_size": 32,
             "shuffle": true,
             "validation_split": 0.1,
             "num_workers": 2
@@ -27,7 +27,7 @@
         "name": "MidiDataLoader",
         "args": {
             "data_path": "data/out.pkl",
-            "batch_size": 64,
+            "batch_size": 32,
             "shuffle": false,
             "validation_split": 0.0,
             "num_workers": 2
@@ -42,7 +42,7 @@
             "amsgrad": true
         }
     },
-    "loss": "midi_loss",
+    "loss": "midi_loss_chord_only",
     "metrics": [
         "melody_accuracy",
         "melody_accuracy_topk",
@@ -57,7 +57,7 @@
         }
     },
     "trainer": {
-        "epochs": 2,
+        "epochs": 100,
         "save_dir": "saved/",
         "save_period": 1,
         "verbosity": 2,
