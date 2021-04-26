@@ -1,0 +1,5 @@
+*.DS_Store
+*.mid*
+*.pyc
+ChordEstimation/saved
+venv/
