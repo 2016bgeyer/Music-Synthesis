@@ -3,3 +3,5 @@
 *.pyc
 ChordEstimation/saved
 venv/
+ChordEstimation/config/
+ChordEstimation/weights/
