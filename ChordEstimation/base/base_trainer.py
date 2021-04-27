@@ -32,6 +32,7 @@ class BaseTrainer:
         self.save_period = cfg_trainer['save_period']
         self.verbosity = cfg_trainer['verbosity']
         self.monitor = cfg_trainer.get('monitor', 'off')
+        self.not_improved_count = 0
 
         # configuration to monitor model performance and save best
         if self.monitor == 'off':
@@ -112,16 +113,16 @@ class BaseTrainer:
                     self.logger.warning("Warning: Metric '{}' is not found. Model performance monitoring is disabled.".format(self.mnt_metric))
                     self.mnt_mode = 'off'
                     improved = False
-                    not_improved_count = 0
+                    self.not_improved_count = 0
 
                 if improved:
                     self.mnt_best = log[self.mnt_metric]
-                    not_improved_count = 0
+                    self.not_improved_count = 0
                     best = True
                 else:
-                    not_improved_count += 1
+                    self.not_improved_count += 1
 
-                if not_improved_count > self.early_stop:
+                if self.not_improved_count > self.early_stop:
                     self.logger.info("Validation performance didn\'t improve for {} epochs. Training stops.".format(self.early_stop))
                     break
 
@@ -149,6 +150,7 @@ class BaseTrainer:
             'state_dict': self.model.state_dict(),
             'optimizer': self.optimizer.state_dict(),
             'monitor_best': self.mnt_best,
+            'not_improved_count': 0 if save_best else self.not_improved_count,
             'config': self.config
         }
         filename = os.path.join(self.checkpoint_dir, 'checkpoint-epoch{}.pth'.format(epoch))
@@ -168,6 +170,7 @@ class BaseTrainer:
         checkpoint = torch.load(resume_path)
         self.start_epoch = checkpoint['epoch'] + 1
         self.mnt_best = checkpoint['monitor_best']
+        self.not_improved_count = self.not_improved_count
 
         # load model params from checkpoint.
         if checkpoint['config']['model']['name'] != self.config['model']['name']:
