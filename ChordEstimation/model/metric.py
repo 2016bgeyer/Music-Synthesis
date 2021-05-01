@@ -18,15 +18,8 @@ def melody_preprocess(output, target, extra=None):
 
     batch_size = len(seq_lengths)
 
-    if MidiDataset.USE_SEQUENCE:
-        flat_melody_out = melody_out
-        flat_melody_y = melody_y
-    else:
-        flat_melody_out = torch.tensor([])
-        flat_melody_y = torch.tensor([]).long()
-        for i in range(batch_size):
-            flat_melody_out = torch.cat((flat_melody_out, melody_out[i, :seq_lengths[i]]))
-            flat_melody_y = torch.cat((flat_melody_y, melody_y[i, :seq_lengths[i]].long()))
+    flat_melody_out = melody_out
+    flat_melody_y = melody_y
 
     return flat_melody_out, flat_melody_y
 
@@ -54,22 +47,11 @@ def chord_preprocess(output, target, extra=None):
 
     batch_size = len(seq_lengths)
 
-    if MidiDataset.USE_SEQUENCE:
-        flat_chord_out = chord_out
-        flat_chord_y = chord_y
-    else:
-        flat_chord_out = torch.tensor([])
-        flat_chord_y = torch.tensor([])
-        for i in range(batch_size):
-            flat_chord_out = torch.cat((flat_chord_out, chord_out[i, :seq_lengths[i]]))
-            flat_chord_y = torch.cat((flat_chord_y, chord_y[i, :seq_lengths[i]].float()))
-
-    if MidiDataset.USE_CHORD_ONEHOT:
-        flat_chord_out = torch.exp(flat_chord_out)
-        flat_chord_y = flat_chord_y.long()
-    else:
-        flat_chord_out = flat_chord_out.flatten()
-        flat_chord_y = flat_chord_y.flatten()
+    flat_chord_out = chord_out
+    flat_chord_y = chord_y
+    
+    flat_chord_out = torch.exp(flat_chord_out)
+    flat_chord_y = flat_chord_y.long()
 
     return flat_chord_out, flat_chord_y
 
