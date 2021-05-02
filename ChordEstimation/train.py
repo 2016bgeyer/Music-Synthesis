@@ -2,10 +2,7 @@ import os
 import json
 import argparse
 import torch
-import data_loader.data_loaders as module_data_loader
-import data_loader.collate as module_collate
-import model.loss as module_loss
-import model.metric as module_metric
+from data_loader.data_loaders import MidiDataLoader
 import model.model as module_model
 from trainer import Trainer
 from utils import Logger, get_instance
@@ -13,7 +10,7 @@ from utils import Logger, get_instance
 
 def main(config, resume):
     # setup data_loader instances
-    data_loader = get_instance(module_data_loader, 'data_loader', config)
+    data_loader = MidiDataLoader()
     valid_data_loader = data_loader.split_validation()
 
     # build model architecture
@@ -21,8 +18,8 @@ def main(config, resume):
     print(model)
 
     # get function handles of loss and metrics
-    loss = getattr(module_loss, config['loss'])
-    metrics = [getattr(module_metric, met) for met in config['metrics']]
+    loss = getattr(module_model, config['loss'])
+    metrics = [getattr(module_model, met) for met in config['metrics']]
 
     # build optimizer, learning rate scheduler. delete every lines containing lr_scheduler for disabling scheduler
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())

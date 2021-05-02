@@ -9,7 +9,7 @@ class MidiDataLoader(DataLoader):
     """
     Midi Dataloader class
     """
-    def __init__(self, data_path, batch_size, shuffle, validation_split, num_workers, **kwargs):
+    def __init__(self, data_path='data/out.pkl', batch_size=32, shuffle=True, validation_split=0.1, num_workers=2, **kwargs):
         self.validation_split = validation_split
         self.shuffle = shuffle
 
@@ -27,11 +27,11 @@ class MidiDataLoader(DataLoader):
             'num_workers': num_workers,
             'collate_fn': midi_collate_fn
             }
-        super(MidiDataLoader, self).__init__(sampler=self.sampler, **self.init_kwargs)
+        DataLoader(sampler=self.sampler, **self.init_kwargs)
 
     def _split_sampler(self, split):
         if split == 0.0:
-            return None, None       # test_data_loader in config uses a split of 0.0
+            return None, None       # testdataloader uses a split of 0.0
 
         idx_full = np.arange(self.n_samples)
 
@@ -57,3 +57,12 @@ class MidiDataLoader(DataLoader):
             return None
         else:
             return DataLoader(sampler=self.valid_sampler, **self.init_kwargs)
+
+class TestMidiDataLoader(MidiDataLoader):
+    def __init__(self, data_path='data/out.pkl', shuffle=False, validation_split=0.0):
+        init_kwargs = {
+            'data_path': data_path,
+            'shuffle': shuffle,
+            'validation_split': validation_split
+            }
+        MidiDataLoader(**init_kwargs)

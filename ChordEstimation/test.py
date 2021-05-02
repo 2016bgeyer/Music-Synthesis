@@ -3,8 +3,6 @@ import json
 import torch
 import argparse
 import data_loader.data_loaders as module_data_loader
-import model.loss as module_loss
-import model.metric as module_metric
 import model.model as module_model
 from utils import get_instance
 from tqdm import tqdm
@@ -19,8 +17,8 @@ def main(config, resume):
     model.summary()
 
     # get function handles of loss and metrics
-    loss_fn = getattr(module_loss, config['loss'])
-    metric_fns = [getattr(module_metric, met) for met in config['metrics']]
+    loss_fn = getattr(module_model, config['loss'])
+    metric_fns = [getattr(module_model, met) for met in config['metrics']]
 
     # load state dict
     checkpoint = torch.load(resume)
