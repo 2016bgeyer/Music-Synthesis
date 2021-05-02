@@ -8,9 +8,9 @@ from trainer import Trainer
 from utils import Logger, get_instance
 
 
-def train_model(config, resume):
+def train_model(config, resume, data_path='./data/small_train_dataset.pkl'):
     # setup data_loader instances
-    data_loader = MidiDataLoader(data_path='./data/small_key_output.pkl')
+    data_loader = MidiDataLoader(data_path)
     valid_data_loader = data_loader.split_validation()
 
     # build model architecture

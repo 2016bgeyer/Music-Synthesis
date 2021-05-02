@@ -231,7 +231,7 @@ def accuracy_topk(output, target, k=3):
 
 
 def chord_and_melody_loss(output, target, extra=None):
-    return melody_loss(output, target, extra) + midi_loss_chord_only(output, target, extra)
+    return melody_loss(output, target, extra) + chord_loss(output, target, extra)
 
 def melody_loss(output, target, extra=None):
     melody_out = output['melody_out']
@@ -250,7 +250,7 @@ def melody_loss(output, target, extra=None):
 
     return F.nll_loss(flat_melody_out, flat_melody_y)
 
-def midi_loss_chord_only(output, target, extra=None):
+def chord_loss(output, target, extra=None):
     chord_out = output['chord_out']
     chord_y = target['chord_y']
 

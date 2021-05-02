@@ -1,12 +1,12 @@
 {
-    "name": "64_Batch_2_worker_Combined_BiLSTM_01",
+    "name": "Combined_BiLSTM_01",
     "n_gpu": 1,
     "model": {
         "name": "MyModel",
         "args": {
             "vocab_size": 14,
             "embed_size": 8,
-            "hidden_size": 512,
+            "hidden_size": 128,
             "num_layers": 2,
             "dropout": 0.2,
             "bidirectional": true
@@ -20,7 +20,7 @@
             "amsgrad": true
         }
     },
-    "loss": "chord_and_melody_loss",
+    "loss": "chord_loss",
     "metrics": [
         "melody_accuracy",
         "melody_accuracy_topk",
@@ -35,11 +35,11 @@
         }
     },
     "trainer": {
-        "epochs": 1,
+        "epochs": 2,
         "save_dir": "saved/",
         "save_period": 1,
         "verbosity": 2,
-        "monitor": "min val_loss",
+        "monitor": "min valid_loss",
         "early_stop": 5,
         "tensorboardX": true,
         "log_dir": "saved/runs"

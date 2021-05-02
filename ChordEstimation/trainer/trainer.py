@@ -77,8 +77,8 @@ class Trainer(BaseTrainer):
         }
 
         if self.do_validation and len(self.valid_data_loader) > 0:
-            val_log = self._valid_epoch(epoch)
-            log = {**log, **val_log}
+            valid_log = self._valid_epoch(epoch)
+            log = {**log, **valid_log}
 
         if self.lr_scheduler is not None:
             self.lr_scheduler.step()
@@ -90,11 +90,11 @@ class Trainer(BaseTrainer):
         Validate after training an epoch
         :return: A log that contains information about validation
         Note:
-            The validation metrics in log must have the key 'val_metrics'.
+            The validation metrics in log must have the key 'valid_metrics'.
         """
         self.model.eval()
-        total_val_loss = 0
-        total_val_metrics = np.zeros(len(self.metrics))
+        total_valid_loss = 0
+        total_valid_metrics = np.zeros(len(self.metrics))
         with torch.no_grad():
             for batch_idx, (data, target, extra) in enumerate(self.valid_data_loader):
                 for k in data.keys():
@@ -107,16 +107,16 @@ class Trainer(BaseTrainer):
 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
                 self.writer.add_scalar('loss', loss.item())
-                total_val_loss += loss.item()
+                total_valid_loss += loss.item()
 
                 for k in output.keys():
                     output[k] = output[k].cpu()
                 for k in target.keys():
                     target[k] = target[k].cpu()
-                total_val_metrics += self._eval_metrics(output, target, extra=extra)
+                total_valid_metrics += self._eval_metrics(output, target, extra=extra)
                 # self.writer.add_image('input', make_grid(data.cpu(), nrow=8, normalize=True))
 
         return {
-            'val_loss': total_val_loss / len(self.valid_data_loader),
-            'val_metrics': (total_val_metrics / len(self.valid_data_loader)).tolist()
+            'valid_loss': total_valid_loss / len(self.valid_data_loader),
+            'valid_metrics': (total_valid_metrics / len(self.valid_data_loader)).tolist()
         }

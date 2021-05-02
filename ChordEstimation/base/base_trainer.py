@@ -91,8 +91,8 @@ class BaseTrainer:
             for key, value in result.items():
                 if key == 'metrics':
                     log.update({mtr.__name__ : value[i] for i, mtr in enumerate(self.metrics)})
-                elif key == 'val_metrics':
-                    log.update({'val_' + mtr.__name__ : value[i] for i, mtr in enumerate(self.metrics)})
+                elif key == 'valid_metrics':
+                    log.update({'valid_' + mtr.__name__ : value[i] for i, mtr in enumerate(self.metrics)})
                 else:
                     log[key] = value
 
