@@ -4,7 +4,6 @@ import json
 import logging
 import datetime
 import torch
-from utils.util import ensure_dir
 from utils.visualization import WriterTensorboardX
 
 
@@ -55,7 +54,8 @@ class BaseTrainer:
         self.writer = WriterTensorboardX(writer_dir, self.logger, cfg_trainer['tensorboardX'])
 
         # Save configuration file into checkpoint directory:
-        ensure_dir(self.checkpoint_dir)
+        if not os.path.exists(self.checkpoint_dir):
+            os.makedirs(self.checkpoint_dir)
         config_save_path = os.path.join(self.checkpoint_dir, 'config.json')
         with open(config_save_path, 'w') as handle:
             json.dump(config, handle, indent=4, sort_keys=False)

@@ -12,13 +12,8 @@ from utils import Logger, get_instance
 
 
 def main(config, resume):
-    train_logger = Logger()
-
-    # setup collate function
-    collate_fn = getattr(module_collate, config['collate_fn'])
-
     # setup data_loader instances
-    data_loader = get_instance(module_data_loader, 'data_loader', config, collate_fn=collate_fn)
+    data_loader = get_instance(module_data_loader, 'data_loader', config)
     valid_data_loader = data_loader.split_validation()
 
     # build model architecture
@@ -40,7 +35,7 @@ def main(config, resume):
                       data_loader=data_loader,
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler,
-                      train_logger=train_logger)
+                      train_logger=Logger())
 
     trainer.train()
 

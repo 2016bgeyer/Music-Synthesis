@@ -1,21 +1,18 @@
 import os
-import argparse
+import json
 import torch
-from tqdm import tqdm
+import argparse
 import data_loader.data_loaders as module_data_loader
-import data_loader.collate as module_collate
 import model.loss as module_loss
 import model.metric as module_metric
 import model.model as module_model
 from utils import get_instance
+from tqdm import tqdm
 
 
 def main(config, resume):
-    # setup collate function
-    collate_fn = getattr(module_collate, config['test_collate_fn'])
-
     # setup data_loader instances
-    data_loader = get_instance(module_data_loader, 'test_data_loader', config, collate_fn=collate_fn)
+    data_loader = get_instance(module_data_loader, 'test_data_loader', config)
 
     # build model architecture
     model = get_instance(module_model, 'model', config)
@@ -45,7 +42,7 @@ def main(config, resume):
             data, target = data.to(device), target.to(device)
             output = model(data)
             #
-            # save sample images, or do something with output here
+            # save sample song sequences or do something with output here
             #
 
             # computing loss, metrics on test set

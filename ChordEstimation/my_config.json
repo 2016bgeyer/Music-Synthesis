@@ -22,7 +22,6 @@
             "num_workers": 2
         }
     },
-    "collate_fn": "midi_collate_fn",
     "test_data_loader": {
         "name": "MidiDataLoader",
         "args": {
@@ -33,7 +32,6 @@
             "num_workers": 2
         }
     },
-    "test_collate_fn": "midi_collate_fn",
     "optimizer": {
         "name": "Adam",
         "args": {
