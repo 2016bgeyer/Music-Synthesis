@@ -1,5 +1,5 @@
 {
-    "name": "Chord_Only_BiLSTM_big",
+    "name": "64_Batch_2_worker_Combined_BiLSTM_01",
     "n_gpu": 1,
     "model": {
         "name": "MyModel",
@@ -15,12 +15,12 @@
     "optimizer": {
         "name": "Adam",
         "args": {
-            "lr": 0.001,
+            "lr": 0.002,
             "weight_decay": 0,
             "amsgrad": true
         }
     },
-    "loss": "midi_loss_chord_only",
+    "loss": "chord_and_melody_loss",
     "metrics": [
         "melody_accuracy",
         "melody_accuracy_topk",
@@ -35,12 +35,12 @@
         }
     },
     "trainer": {
-        "epochs": 100,
+        "epochs": 1,
         "save_dir": "saved/",
         "save_period": 1,
         "verbosity": 2,
         "monitor": "min val_loss",
-        "early_stop": 10,
+        "early_stop": 5,
         "tensorboardX": true,
         "log_dir": "saved/runs"
     }

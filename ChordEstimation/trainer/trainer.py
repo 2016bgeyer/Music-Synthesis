@@ -8,7 +8,7 @@ class Trainer(BaseTrainer):
     
     def __init__(self, model, loss, metrics, optimizer, resume, config,
                  data_loader, valid_data_loader=None, lr_scheduler=None, train_logger=None):
-        BaseTrainer(model, loss, metrics, optimizer, resume, config, train_logger)
+        super(Trainer, self).__init__(model, loss, metrics, optimizer, resume, config, train_logger)
         self.config = config
         self.data_loader = data_loader
         self.valid_data_loader = valid_data_loader
@@ -103,7 +103,7 @@ class Trainer(BaseTrainer):
                     target[k] = target[k].to(self.device)
 
                 output = self.model(data, extra=extra)
-                loss = self.loss(output, target, extra=extra)
+                loss = self.loss(output, target, extra)
 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
                 self.writer.add_scalar('loss', loss.item())

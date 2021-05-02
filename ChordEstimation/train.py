@@ -8,9 +8,9 @@ from trainer import Trainer
 from utils import Logger, get_instance
 
 
-def main(config, resume):
+def train_model(config, resume):
     # setup data_loader instances
-    data_loader = MidiDataLoader()
+    data_loader = MidiDataLoader(data_path='./data/small_key_output.pkl')
     valid_data_loader = data_loader.split_validation()
 
     # build model architecture
@@ -33,8 +33,12 @@ def main(config, resume):
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler,
                       train_logger=Logger())
-
-    trainer.train()
+    log = trainer.train()
+    results = {
+        'checkpoint_dir': trainer.checkpoint_dir,
+        'log': log
+    }
+    return results
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PyTorch Template')
@@ -47,8 +51,8 @@ if __name__ == '__main__':
     if args.config:
         # load config file
         config = json.load(open(args.config))
-        path = os.path.join(config['trainer']['save_dir'], config['name'])
+        # path = os.path.join(config['trainer']['save_dir'], config['name'])
     else:
         raise ValueError("Configuration file need to be specified. Add '-c config.json', for example.")
 
-    main(config, args.resume)
+    train_model(config, args.resume)

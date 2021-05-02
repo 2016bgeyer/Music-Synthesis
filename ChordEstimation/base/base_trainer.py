@@ -62,6 +62,7 @@ class BaseTrainer:
 
         if resume:
             self._resume_checkpoint(resume)
+
     
     def _prepare_device(self, n_gpu_use):
         """ 
@@ -128,7 +129,7 @@ class BaseTrainer:
 
             if epoch % self.save_period == 0:
                 self._save_checkpoint(epoch, save_best=best)
-            
+        return result
 
     def _train_epoch(self, epoch):
         """
