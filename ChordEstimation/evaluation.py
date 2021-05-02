@@ -48,7 +48,7 @@ def train_and_test(config):
 	just_test(test_run_path)
 
 if __name__ == '__main__':
-	configs = ['my_config.json']
+	configs = ['Combined_LSTM_00.json', 'Combined_BiLSTM_00.json']
 
 	for i, config in enumerate(configs):
 		print(f'\n\nStarting Model {i} out of {len(configs)}')

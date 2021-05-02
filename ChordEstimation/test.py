@@ -7,13 +7,6 @@ import model.model as module_model
 from utils import get_instance
 from tqdm import tqdm
 
-# def _eval_metrics(metrics, output, target, extra=None):
-#     acc_metrics = np.zeros(len(metrics))
-#     for i, metric in enumerate(metrics):
-#         acc_metrics[i] += metric(output, target, extra=extra)
-#         # self.writer.add_scalar(f'{metric.__name__}', acc_metrics[i])
-#     return acc_metrics
-
 def test_model(config, resume):
     # setup data_loader instances
     data_loader = TestMidiDataLoader(data_path='./data/small_key_output.pkl')
@@ -56,22 +49,16 @@ def test_model(config, resume):
             # save sample song sequences or do something with output here
             #
 
-            # computing loss, metrics on test set
             loss = loss_fn(output, target, extra)
-
 
             for k in output.keys():
                 output[k] = output[k].cpu()
             for k in target.keys():
                 target[k] = target[k].cpu()
-            # total_metrics += _eval_metrics(output, target, extra=extra)
 
-
-
-            batch_size = data_loader.batch_size
-            total_loss += loss.item() * batch_size
+            total_loss += loss.item() * data_loader.batch_size # multiply all by batch size instead of each one independently
             for i, metric in enumerate(metric_fns):
-                total_metrics[i] += metric(output, target, extra) * batch_size
+                total_metrics[i] += metric(output, target, extra)
 
     n_samples = len(data_loader.sampler)
     log = {'loss': total_loss / n_samples}

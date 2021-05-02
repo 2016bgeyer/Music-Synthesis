@@ -9,7 +9,7 @@ class MidiDataLoader(DataLoader):
     """
     Midi Dataloader class
     """
-    def __init__(self, data_path='data/out.pkl', batch_size=64, shuffle=True, validation_split=0.1, num_workers=2, **kwargs):
+    def __init__(self, data_path='data/out.pkl', batch_size=64, shuffle=True, validation_split=0.1, num_workers=1, **kwargs):
         self.validation_split = validation_split
         self.shuffle = shuffle
 
