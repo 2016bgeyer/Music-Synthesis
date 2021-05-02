@@ -1,33 +1,26 @@
-import sys
-import json
-import numpy
 import torch
 
 from utils.util import get_instance
 import model.model as module_model
 from data_loader.dataset import MidiDataset
+from utils.util import convert_chord_int_to_str, convert_note_to_int
 
 class Predict:
-    MAX_LEN = 1000
     def __init__(self, data_path='./data/out.pkl', resume='./weights/Music_LSTM_big/0304_041925/model_best.pth'):
         """
         Initialize the predict class
         """
-        self.data_path = data_path
-        self.dataset = MidiDataset(self.data_path)
-        self.resume = resume
+        self.dataset = MidiDataset(data_path)
 
         # Load checkpoint
         if torch.cuda.is_available():
-            checkpoint = torch.load(self.resume)
+            checkpoint = torch.load(resume)
         else:
-            checkpoint = torch.load(self.resume, map_location=lambda storage, loc: storage)
-        state_dict = checkpoint['state_dict']
-        self.config = checkpoint['config']
-
+            checkpoint = torch.load(resume, map_location=lambda storage, loc: storage)
+        
         # Load model
-        self.model = get_instance(module_model, 'model', self.config)
-        self.model.load_state_dict(state_dict)
+        self.model = get_instance(module_model, 'model', checkpoint['config'])
+        self.model.load_state_dict(checkpoint['state_dict'])
         self.model.eval()
 
 
@@ -53,17 +46,17 @@ class Predict:
 
         for chord in output_chords:
             c_idx = int(torch.argmax(chord))
-            chordstr = self.dataset.convert_chord_int_to_str(c_idx)
+            chordstr = convert_chord_int_to_str(c_idx)
             pred_output.append(chordstr)
 
         return pred_output
 
 
-    def process(self, input_):
-        """ Preprocess the input for prediction
+    def process(self, melody):
+        """ Preprocess the melody for prediction
         Parameters
         ----------
-        input_: list
+        melody: list
             list of notes
 
         Returns
@@ -73,7 +66,7 @@ class Predict:
         Extra: dict
             dict of extra inputs to model
         """
-        x = [self.dataset.convert_note_to_int(n) for n in input_]
+        x = [convert_note_to_int(n) for n in melody]
         seq_lengths = [len(x)]
 
         # convert to torch tensor
