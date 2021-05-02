@@ -1,5 +1,5 @@
 {
-    "name": "Combined_BiLSTM_00",
+    "name": "Chord_Only_BiLSTM_512_2_4",
     "n_gpu": 1,
     "model": {
         "name": "MyModel",
@@ -8,7 +8,7 @@
             "embed_size": 8,
             "hidden_size": 512,
             "num_layers": 2,
-            "dropout": 0.2,
+            "dropout": 0.4,
             "bidirectional": true
         }
     },
@@ -20,7 +20,7 @@
             "amsgrad": true
         }
     },
-    "loss": "chord_and_melody_loss",
+    "loss": "chord_loss",
     "metrics": [
         "melody_accuracy",
         "melody_accuracy_topk",
@@ -35,11 +35,11 @@
         }
     },
     "trainer": {
-        "epochs": 3,
+        "epochs": 100,
         "save_dir": "saved/",
         "save_period": 1,
         "verbosity": 2,
-        "monitor": "min val_loss",
+        "monitor": "min valid_loss",
         "early_stop": 5,
         "tensorboardX": true,
         "log_dir": "saved/runs"
