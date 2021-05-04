@@ -6,3 +6,4 @@ venv/
 ChordEstimation/saved
 ChordEstimation/config/
 ChordEstimation/weights/
+*.json

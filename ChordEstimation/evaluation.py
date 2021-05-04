@@ -68,19 +68,19 @@ if __name__ == '__main__':
 	configs = os.listdir('configs')
 	configs.reverse()
 	print(configs)
-	# configs = ['my_config.json']
+
 	# train_dataset = 'data/large_train_dataset.pkl'
 	# test_dataset = 'data/large_test_dataset.pkl'
 	# train_dataset = 'data/small_train_dataset.pkl'
 	# test_dataset = 'data/small_test_dataset.pkl'
+
 	train_dataset = 'data/train_out.pkl'
 	test_dataset = 'data/test_out.pkl'
-	# train_dataset = 'data/out.pkl'
-	# test_dataset = 'data/out.pkl'
 	for i, config in enumerate(configs):
 		print(f'\n\nStarting Model {i} out of {len(configs)}')
 		try:
-			# train_and_test(config, train_dataset, test_dataset)
+			import torch
+			torch.cuda.empty_cache()
 			train_and_test(os.path.join('./configs/', config), train_dataset, test_dataset)
 		except:
 			print("Unexpected error:", sys.exc_info())
@@ -90,6 +90,3 @@ if __name__ == '__main__':
 	# test_config = open(os.path.join(test_run_dir, 'config.json') 
 	# test_run_path = test_run_dir
 	# just_test(test_run_path)
-
-	
-	# split_dataset() # to generate train and test datasets

@@ -7,9 +7,9 @@ import model.model as module_model
 from utils import get_instance
 from tqdm import tqdm
 
-def test_model(config, resume):
+def test_model(config, resume, data_path='./data/small_test_dataset.pkl'):
     # setup data_loader instances
-    data_loader = TestMidiDataLoader(data_path='./data/small_key_output.pkl')
+    data_loader = TestMidiDataLoader(data_path)
 
     # build model architecture
     model = get_instance(module_model, 'model', config)
@@ -40,10 +40,7 @@ def test_model(config, resume):
                 data[k] = data[k].to(device)
             for k in target.keys():
                 target[k] = target[k].to(device)
-                
-            print(f'data: {data}')
-            print(f'target: {target}')
-            print(f'extra: {extra}')
+
             output = model(data, extra)
             #
             # save sample song sequences or do something with output here
@@ -62,7 +59,7 @@ def test_model(config, resume):
 
     n_samples = len(data_loader.sampler)
     log = {'loss': total_loss / n_samples}
-    log.update({met.__name__ : total_metrics[i].item() / n_samples for i, met in enumerate(metric_fns)})
+    log.update({met.__name__ : total_metrics[i].item() for i, met in enumerate(metric_fns)})
     print(log)
     return log
 
